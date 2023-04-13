@@ -114,10 +114,7 @@ class ResNet(nn.Module):
     def __init__(self,
                  block,
                  layers,
-                 sample_input_D,
-                 sample_input_H,
-                 sample_input_W,
-                 num_seg_classes,
+                 num_seg_classes=2,
                  shortcut_type='B',
                  no_cuda = False):
         self.inplanes = 64
@@ -210,7 +207,7 @@ class ResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        x = self.conv_seg(x)
+        #x = self.conv_seg(x)
 
         return x
 

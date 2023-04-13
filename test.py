@@ -1,4 +1,6 @@
-from setting import parse_opts 
+import pdb
+
+from setting import parse_opts
 from datasets.brains18 import BrainS18Dataset
 from model import generate_model
 import torch
@@ -64,7 +66,7 @@ def test(data_loader, model, img_names, sets):
         [depth, height, width] = data.shape
         mask = probs[0]
         scale = [1, depth*1.0/mask_d, height*1.0/mask_h, width*1.0/mask_w]
-        mask = ndimage.interpolation.zoom(mask, scale, order=1)
+        mask = ndimage.interpolation.zoom(mask.cpu().detach().numpy(), scale, order=1)
         mask = np.argmax(mask, axis=0)
         
         masks.append(mask)
@@ -82,6 +84,8 @@ if __name__ == '__main__':
     checkpoint = torch.load(sets.resume_path)
     net, _ = generate_model(sets)
     net.load_state_dict(checkpoint['state_dict'])
+
+    pdb.set_trace()
 
     # data tensor
     testing_data =BrainS18Dataset(sets.data_root, sets.img_list, sets)
